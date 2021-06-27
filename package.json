@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "element-plus": "^1.0.2-beta.53",
+    "ffmpeg.js": "^4.2.9003",
     "vue": "^3.0.5",
     "vue-router": "^4.0.10"
   },

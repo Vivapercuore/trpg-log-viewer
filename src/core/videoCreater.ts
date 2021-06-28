@@ -1,3 +1,8 @@
+
+
+import { download } from "@src/utils/downLoadBlob"
+
+import testmusic from "@src/assets/小刀会序曲.mp3"
 //https://github.com/Kagami/ffmpeg.js/
 
 // const worker = new Worker("@src/../node_modules/ffmpeg.js/ffmpeg-worker-mp4.js");
@@ -27,21 +32,37 @@ worker.onmessage = function (e) {
     }
 };
 
+
 function test() {
     const stream = new MediaStream();
     const videoElem = document.getElementById("canvas");
     const videoStream = videoElem.captureStream();
-    const audioTracks = videoStream.getAudioTracks()
-    if (audioTracks?.[0]) {
-        stream.addTrack(audioTracks[0]);
-    }
+
+    const audio = new Audio(testmusic);
+    const audiostream = audio.captureStream();
+
+    document.addEventListener("click",()=>{
+        audio.play()
+        console.log("audiostream",audiostream)
+        const audioTracks = audiostream.getAudioTracks();
+        console.log("audioTracks",audioTracks)
+        if (audioTracks?.[0]) {
+            stream.addTrack(audioTracks[0]);
+        }
+        setTimeout(() => {
+            audio.pause()
+        }, 5000);
+        mediaRecorder.start(); // 不传参数则直到stop为止，为一整段，传入ms数，则分段触发 ondataavailable
+    })
+
+
     stream.addTrack(canvas.captureStream().getVideoTracks()[0]);
     const options = { mimeType: "video/webm" };
     const recordedBlobs = [];
     const mediaRecorder = new MediaRecorder(stream, options);
 
-    function handleStop(event){
-        console.log("handleStop",event)
+    function handleStop(event) {
+        console.log("handleStop", event);
     }
 
     mediaRecorder.onstop = handleStop;
@@ -50,13 +71,12 @@ function test() {
         if (event.data && event.data.size > 0) {
             recordedBlobs.push(event.data);
             const blob = new Blob(recordedBlobs, { type: "video/webm" });
-            console.log({blob})
-            // download(blob)
+            console.log({ blob });
+            download(blob)
         }
     }
 
     mediaRecorder.ondataavailable = handleDataAvailable;
-    mediaRecorder.start(); // 不传参数则直到stop为止，为一整段，传入ms数，则分段触发 ondataavailable
 
     setTimeout(() => {
         mediaRecorder.stop();

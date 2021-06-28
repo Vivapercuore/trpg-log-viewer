@@ -68,7 +68,7 @@ export default defineComponent({
     }
   },
   created() {
-    console.log('editor created')
+    // console.log('editor created')
   },
 })
 </script>

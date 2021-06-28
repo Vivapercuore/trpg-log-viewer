@@ -56,7 +56,7 @@ function test() {
     }
 
     mediaRecorder.ondataavailable = handleDataAvailable;
-    mediaRecorder.start(5000); // collect 100ms of data
+    mediaRecorder.start(); // 不传参数则直到stop为止，为一整段，传入ms数，则分段触发 ondataavailable
 
     setTimeout(() => {
         mediaRecorder.stop();

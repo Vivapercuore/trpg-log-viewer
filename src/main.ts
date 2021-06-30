@@ -1,11 +1,11 @@
 
 
-import { createApp } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createApp 
+} from 'vue'
 
 import App from './App.vue'
 
-import route from './route.ts'
+import route from '@src/route'
 
 import ElementPlus from 'element-plus'
 import 'dayjs/locale/zh-cn'

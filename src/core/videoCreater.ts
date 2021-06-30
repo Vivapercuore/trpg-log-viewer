@@ -9,107 +9,73 @@ import testmusic from "@src/assets/小刀会序曲.mp3"
 const worker = new Worker(
     "@src/../node_modules/ffmpeg.js/ffmpeg-worker-webm.js"
 );
-
 worker.onmessage = function (e) {
     const msg = e.data;
     switch (msg.type) {
         case "ready":
+            worker.ready =true
             console.log("worker ready");
-            // worker.postMessage({ type: "run", arguments: ["-version"] });
-            break;
-        case "stdout":
-            console.log("worker stdout");
-            console.log(msg.data);
-            break;
-        case "stderr":
-            console.log("worker stderr");
-            console.log(msg.data);
-            break;
-        case "done":
-            console.log("worker done");
-            console.log(msg.data);
             break;
     }
 };
 
-
-function test() {
-    const stream = new MediaStream();
-    const videoElem = document.getElementById("canvas");
-    const videoStream = videoElem.captureStream();
-
-    const audio = new Audio(testmusic);
-    const audiostream = audio.captureStream();
-
-    document.addEventListener("click",()=>{
-        audio.play()
-        console.log("audiostream",audiostream)
-        const audioTracks = audiostream.getAudioTracks();
-        console.log("audioTracks",audioTracks)
-        if (audioTracks?.[0]) {
-            stream.addTrack(audioTracks[0]);
-        }
-        setTimeout(() => {
-            audio.pause()
-        }, 5000);
-        mediaRecorder.start(); // 不传参数则直到stop为止，为一整段，传入ms数，则分段触发 ondataavailable
-    })
-
-
-    stream.addTrack(canvas.captureStream().getVideoTracks()[0]);
-    const options = { mimeType: "video/webm" };
-    const recordedBlobs = [];
-    const mediaRecorder = new MediaRecorder(stream, options);
-
-    function handleStop(event) {
-        console.log("handleStop", event);
-    }
-
-    mediaRecorder.onstop = handleStop;
-
-    function handleDataAvailable(event) {
-        if (event.data && event.data.size > 0) {
-            recordedBlobs.push(event.data);
-            const blob = new Blob(recordedBlobs, { type: "video/webm" });
-            console.log({ blob });
-            download(blob)
-        }
-    }
-
-    mediaRecorder.ondataavailable = handleDataAvailable;
-
-    setTimeout(() => {
-        mediaRecorder.stop();
-    }, 10000);
-
-    const blob = new Blob(recordedBlobs, { type: "video/webm" });
-    return blob;
+interface MEMF {
+    name: String
+    data: ArrayBuffer|ArrayBufferView|Array
 }
 
-// worker.postMessage({
-//   type: "command",
-//   arguments: [
-//     "-i",
-//     "audiovideo.webm",
-//     "-c:v",
-//     "mpeg4",
-//     "-c:a",
-//     "aac", // or vorbis
-//     "-b:v",
-//     "6400k", // video bitrate
-//     "-b:a",
-//     "4800k", // audio bitrate
-//     "-strict",
-//     "experimental",
-//     "audiovideo.mp4",
-//   ],
-//   files: [
-//     {
-//       data: new Uint8Array(fileReaderData),
-//       name: "audiovideo.webm",
-//     },
-//   ],
+function exec(args:[String],MEMFS:[MEMF]) {
+    return new Promise((resolve, reject) =>{
+        let msgs = []
+        worker.onmessage = function (e) {
+            const msg = e.data;
+            switch (msg.type) {
+                case "ready":
+                    worker.ready =true
+                    console.log("worker ready");
+                    // worker.postMessage({ type: "run", arguments: ["-version"] });
+                    // {type: "run", ...opts} - 使用提供的选项开始新工作。
+                    worker.postMessage({ type: "run", arguments: [...args] });
+                    break;
+                case "stdout":
+                    // console.log("worker stdout");
+                    msgs.push(msg.data)
+                    break;
+                case "stderr":
+                    // console.log("worker stderr");
+                    reject(msg.data);
+                    break;
+                case "done":
+                    // console.log("worker done");
+                    resolve({
+                        data:msg.data,
+                        log:msgs,
+                    });
+                    break;
+            }
+        };
+        if (worker.ready) {
+            worker.postMessage({ type: "run", arguments: [...args] });
+        }
+    })
+}
+
+async function test() {
+    console.log("run test")
+    return exec(["-version"],[])
+}
+
+// const ffmpeg = require("ffmpeg.js");
+// const fs = require("fs");
+// const testData = new Uint8Array(fs.readFileSync("test.webm"));
+// // Encode test video to VP8.
+// const result = ffmpeg({
+//   MEMFS: [{name: "test.webm", data: testData}],
+//   arguments: ["-i", "test.webm", "-c:v", "libvpx", "-an", "out.webm"],
 // });
+// // Write out.webm to disk.
+// const out = result.MEMFS[0];
+// fs.writeFileSync(out.name, Buffer(out.data));
 
 export default worker;
 

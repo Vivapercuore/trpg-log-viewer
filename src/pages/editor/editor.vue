@@ -2,34 +2,50 @@
   <el-row :gutter="10">
     <el-col :md="24">
       <div>
-        <template v-for="classname in classes" :key="classname.classname">
+        <template v-for="classname in classes"
+                  :key="classname.classname">
           <span :class="classname.classname"> {{ classname.show }}</span>
         </template>
         测试按钮区 {{ countState.count }}
       </div>
       <div>
-        <el-button @click="inc()" type="primary" plain>点击就+1</el-button>
-        <el-button @click="testinc()" type="primary" plain>点击就+2</el-button>
-        <el-button @click="FFmpegTest()" type="primary" plain>测试FFmpeg</el-button>
-        <el-button @click="getImageData()" type="primary" plain>getImageData</el-button>
-        <el-button @click="farmeTest()" type="primary" plain>性能测试</el-button>
+        <el-button @click="inc()"
+                   type="primary"
+                   plain>点击就+1</el-button>
+        <el-button @click="testinc()"
+                   type="primary"
+                   plain>点击就+2</el-button>
+        <el-button @click="FFmpegTest()"
+                   type="primary"
+                   plain>测试FFmpeg</el-button>
+        <el-button @click="getImageData()"
+                   type="primary"
+                   plain>getImageData</el-button>
+        <el-button @click="farmeTest()"
+                   type="primary"
+                   plain>性能测试</el-button>
       </div>
     </el-col>
 
-    <el-col :md="24" :lg="18">
+    <el-col :md="24"
+            :lg="18">
       <div class="monitor">
         <monitor />
       </div>
     </el-col>
 
-    <el-col :sm="24" :md="8" :lg="6">
+    <el-col :sm="24"
+            :md="8"
+            :lg="6">
       <div class="editor">
         <timeAxis />
         时间轴
       </div>
     </el-col>
 
-    <el-col :sm="24" :md="16" :lg="24">
+    <el-col :sm="24"
+            :md="16"
+            :lg="24">
       <div class="timeAxis">编辑器</div>
     </el-col>
   </el-row>
@@ -42,9 +58,8 @@ import timeAxis from '@src/pages/editor/editor/timeAxis.vue'
 
 import { clickStore } from '@src/store/click-store'
 
-import {test} from '@src/core/videoCreater'
-import {offLineControl} from '@src/core/offLineCanvas'
-
+import { test } from '@src/core/videoCreater'
+import { offLineControl } from '@src/core/offLineCanvas'
 
 export default defineComponent({
   name: 'editor',
@@ -96,22 +111,22 @@ export default defineComponent({
       clickStore.incrementCount()
       clickStore.incrementCount()
     },
-    async FFmpegTest(){
-      console.log("FFmpegTest")
+    async FFmpegTest() {
+      console.log('FFmpegTest')
       let res = await test()
       console.log(res)
     },
-    getImageData(){
+    getImageData() {
       let frames = offLineControl.start()
-      console.log({frames})
+      console.log({ frames })
     },
-    farmeTest(){
+    farmeTest() {
       let frames = offLineControl.start()
-      console.time("farmeTest");
-      frames.push(...offLineControl.getFrame(100))
-      console.timeEnd("farmeTest");
-      console.log({frames})
-    }
+      console.time('farmeTest')
+      frames.push(...offLineControl.getFrame(1000))
+      console.timeEnd('farmeTest')
+      // console.log(frames[0].data.length)
+    },
   },
 })
 </script>

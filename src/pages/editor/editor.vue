@@ -9,11 +9,21 @@
         测试按钮区 {{ countState.count }}
       </div>
       <div>
-        <el-button @click="testinc()" type="primary" plain>点击就+2</el-button>
-        <el-button @click="FFmpegTest()" type="primary" plain>测试FFmpeg</el-button>
-        <el-button @click="getImageData()" type="primary" plain>getImageData</el-button>
-        <el-button @click="farmeTest()" type="primary" plain>性能测试</el-button>
-        <el-button @click="FFmpegFarmeTest()" type="primary" plain>FFmpeg合成测试</el-button>
+        <el-button @click="testinc()"
+                   type="primary"
+                   plain>点击就+2</el-button>
+        <el-button @click="FFmpegTest()"
+                   type="primary"
+                   plain>测试FFmpeg</el-button>
+        <el-button @click="getImageData()"
+                   type="primary"
+                   plain>getImageData</el-button>
+        <el-button @click="farmeTest()"
+                   type="primary"
+                   plain>性能测试</el-button>
+        <el-button @click="downLoad()"
+                   type="primary"
+                   plain>点击下载</el-button>
       </div>
     </el-col>
 
@@ -38,6 +48,13 @@
             :lg="24">
       <div class="timeAxis">编辑器</div>
     </el-col>
+
+    <el-col :md="24">
+      <div>{{ updatetime }}</div>
+      <video :src="videosrc"
+             controls />
+    </el-col>
+
   </el-row>
 </template>
 
@@ -48,9 +65,10 @@ import timeAxis from '@src/pages/editor/editor/timeAxis.vue'
 
 import { clickStore } from '@src/store/click-store'
 
-import {test,testEncodePNGs2WebM} from '@src/core/videoCreater'
-import {offLineControl} from '@src/core/offLineCanvas'
+import { download } from '@src/utils/downLoadBlob'
 
+import { test, testEncodePNGs2WebM } from '@src/core/videoCreater'
+import { offLineControl } from '@src/core/offLineCanvas'
 
 export default defineComponent({
   name: 'editor',
@@ -59,13 +77,14 @@ export default defineComponent({
     timeAxis,
   },
   setup() {
-
     return {
       countState: clickStore.getState(),
     }
   },
   data() {
     return {
+      updatetime: '',
+      videosrc: '',
       classes: [
         {
           classname: 'hidden-sm-and-up',
@@ -98,14 +117,18 @@ export default defineComponent({
       clickStore.incrementCount()
       clickStore.incrementCount()
     },
-    async FFmpegTest(){
-      console.log("FFmpegTest")
+    async FFmpegTest() {
+      console.time('FFmpegTest')
       try {
-      let res = await test()
-      console.log(res)
+        let res = await test()
+        this.$data.updatetime = new Date().toString()
+        this.$data.videosrc = URL.createObjectURL(res)
+        this.videoData = res
+        console.log(res)
       } catch (error) {
-      console.error(error)
+        console.error(error)
       }
+      console.timeEnd('FFmpegTest')
     },
     getImageData() {
       let frames = offLineControl.start()
@@ -113,14 +136,16 @@ export default defineComponent({
     },
     farmeTest() {
       let frames = offLineControl.start()
-      console.time("farmeTest");
+      console.time('farmeTest')
       frames.push(...offLineControl.getFrame(1))
-      console.timeEnd("farmeTest");
-      console.log({frames})
+      console.timeEnd('farmeTest')
+      console.log({ frames })
     },
-    FFmpegFarmeTest(){
-      testEncodePNGs2WebM()
-    }
+    downLoad() {
+      if (this.videoData) {
+        download(this.videoData)
+      }
+    },
   },
 })
 </script>

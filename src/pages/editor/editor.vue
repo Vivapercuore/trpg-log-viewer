@@ -8,11 +8,11 @@
         测试按钮区 {{ countState.count }}
       </div>
       <div>
-        <el-button @click="inc()" type="primary" plain>点击就+1</el-button>
         <el-button @click="testinc()" type="primary" plain>点击就+2</el-button>
         <el-button @click="FFmpegTest()" type="primary" plain>测试FFmpeg</el-button>
         <el-button @click="getImageData()" type="primary" plain>getImageData</el-button>
         <el-button @click="farmeTest()" type="primary" plain>性能测试</el-button>
+        <el-button @click="FFmpegFarmeTest()" type="primary" plain>FFmpeg合成测试</el-button>
       </div>
     </el-col>
 
@@ -42,7 +42,7 @@ import timeAxis from '@src/pages/editor/editor/timeAxis.vue'
 
 import { clickStore } from '@src/store/click-store'
 
-import {test} from '@src/core/videoCreater'
+import {test,testEncodePNGs2WebM} from '@src/core/videoCreater'
 import {offLineControl} from '@src/core/offLineCanvas'
 
 
@@ -53,13 +53,9 @@ export default defineComponent({
     timeAxis,
   },
   setup() {
-    const inc = () => {
-      clickStore.incrementCount()
-    }
 
     return {
       countState: clickStore.getState(),
-      inc,
     }
   },
   data() {
@@ -98,8 +94,12 @@ export default defineComponent({
     },
     async FFmpegTest(){
       console.log("FFmpegTest")
+      try {
       let res = await test()
       console.log(res)
+      } catch (error) {
+      console.error(error)
+      }
     },
     getImageData(){
       let frames = offLineControl.start()
@@ -108,9 +108,12 @@ export default defineComponent({
     farmeTest(){
       let frames = offLineControl.start()
       console.time("farmeTest");
-      frames.push(...offLineControl.getFrame(100))
+      frames.push(...offLineControl.getFrame(1))
       console.timeEnd("farmeTest");
       console.log({frames})
+    },
+    FFmpegFarmeTest(){
+      testEncodePNGs2WebM()
     }
   },
 })

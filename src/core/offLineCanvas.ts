@@ -8,6 +8,7 @@ class OffLineDrawer extends Drawer {
         this.stop()
         console.log("start",state)
         this.state = state
+        this.canvas = canvas
         this.ctx = canvas.getContext("2d");
         console.log("ctx",this.ctx)
         this.draw(false)
@@ -16,18 +17,35 @@ class OffLineDrawer extends Drawer {
     }
     stop(){
         delete this.ctx
+        delete this.canvas
     }
     nextFrame(){
         this.ctx.clearRect(0, 0, this.state.resolutionRatio.width, this.state.resolutionRatio.height);
         this.draw(false)
     }
-    getFrame(){
-        return this.ctx.getImageData(0, 0, this.state.resolutionRatio.width, this.state.resolutionRatio.height)
+    async getFrame(){
+        const mimeType = 'image/png';
+
+        return new Promise((resolve, reject) =>{
+            try {
+                this.canvas.toBlob((blob) => {
+                    const reader = new FileReader();
+                    reader.addEventListener('loadend', () => {
+                      const arrayBuffer = new Uint8Array(reader.result);
+                      resolve(arrayBuffer)
+                    });
+                    reader.readAsArrayBuffer(blob);
+                  }, mimeType,1);
+            } catch (error) {
+                reject(error)
+            }
+        }) 
+        // return this.ctx.getImageData(0, 0, this.state.resolutionRatio.width, this.state.resolutionRatio.height).data.buffer// ArrayBuffer
     }
 }
 
 const offLineControl = {
-    start(){
+    async start(){
         this?.offLineDraw?.stop()
         delete this?.offLineDraw
         delete this?.offLineCanvas
@@ -39,11 +57,11 @@ const offLineControl = {
         this.offLineDraw.start(this.offLineCanvas,this.state)
         return this.getFrame()
     },
-    getFrame(n=1){
+    async getFrame(n=1){
         if (n<1) { return []; } //防止异常输入
         const frames = []
         for (let index = 0; index < n; index++) {
-            frames.push( this.offLineDraw.getFrame() )
+            frames.push( await this.offLineDraw.getFrame() )
             this.offLineDraw.nextFrame()
         }
         return frames

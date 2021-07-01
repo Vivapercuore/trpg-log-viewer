@@ -7,4 +7,4 @@
     URL.revokeObjectURL(a.href)
 　　a.remove();
 }
-export {download }
+export { download }

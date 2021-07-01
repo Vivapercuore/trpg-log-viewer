@@ -2,7 +2,8 @@
   <el-row :gutter="10">
     <el-col :md="24">
       <div>
-        <template v-for="classname in classes" :key="classname.classname">
+        <template v-for="classname in classes"
+                  :key="classname.classname">
           <span :class="classname.classname"> {{ classname.show }}</span>
         </template>
         测试按钮区 {{ countState.count }}
@@ -16,20 +17,25 @@
       </div>
     </el-col>
 
-    <el-col :md="24" :lg="18">
+    <el-col :md="24"
+            :lg="18">
       <div class="monitor">
         <monitor />
       </div>
     </el-col>
 
-    <el-col :sm="24" :md="8" :lg="6">
+    <el-col :sm="24"
+            :md="8"
+            :lg="6">
       <div class="editor">
         <timeAxis />
         时间轴
       </div>
     </el-col>
 
-    <el-col :sm="24" :md="16" :lg="24">
+    <el-col :sm="24"
+            :md="16"
+            :lg="24">
       <div class="timeAxis">编辑器</div>
     </el-col>
   </el-row>
@@ -101,11 +107,11 @@ export default defineComponent({
       console.error(error)
       }
     },
-    getImageData(){
+    getImageData() {
       let frames = offLineControl.start()
-      console.log({frames})
+      console.log({ frames })
     },
-    farmeTest(){
+    farmeTest() {
       let frames = offLineControl.start()
       console.time("farmeTest");
       frames.push(...offLineControl.getFrame(1))

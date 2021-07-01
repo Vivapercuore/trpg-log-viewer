@@ -63,6 +63,7 @@ const offLineControl = {
         for (let index = 0; index < n; index++) {
             frames.push( await this.offLineDraw.getFrame() )
             this.offLineDraw.nextFrame()
+            console.log("frames",index,"/",n)
         }
         return frames
     }

@@ -28,30 +28,32 @@
     </el-col>
   </el-row>
 
-  <el-row :gutter="10">
+  <el-row :gutter="10"
+          style="overflow:hidden">
     <el-col :md="24"
-            :lg="18">
+            :xl="18">
       <div class="monitor">
         <monitor />
       </div>
     </el-col>
 
-    <el-col :sm="24"
-            :md="8"
-            :lg="6">
+    <el-col :md="24"
+            :xl="6">
       <div class="editor">
         消息列表
         <messageLine />
       </div>
     </el-col>
 
+  </el-row>
+
+  <el-row :gutter="10">
     <el-col :md="24">
       <div class="editor">
         时间轴
         <timeAxis />
       </div>
     </el-col>
-    
 
     <el-col :sm="24"
             :md="16"
@@ -61,7 +63,8 @@
 
     <el-col :md="24">
       <div>{{ updatetime }}</div>
-      <video class="video" :src="videosrc"
+      <video class="video"
+             :src="videosrc"
              controls />
     </el-col>
 
@@ -163,9 +166,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
-.video{
+.video {
   width: 100%;
 }
-
 </style>

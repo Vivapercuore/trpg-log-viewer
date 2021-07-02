@@ -8,15 +8,17 @@ interface MonitData extends Object {
     resolutionRatio:size
     bg: pic
     picList: [pic]
+    monitSize:size
+    messageLimitHeight:number
 }
 
 interface position extends Object {
-    x: Number
-    y: Number
+    x: number
+    y: number
 }
 interface size extends Object {
-    width: Number
-    height: Number
+    width: number
+    height: number
 }
 
 interface pic extends Object  {
@@ -60,15 +62,31 @@ class dataStore extends Store<MonitData> {
         return {
             resolutionRatio:{
                 width: 1920,
-                height: 1080
+                height: 1080,
             },
             bg: bg,
             picList: [kp],
+            monitSize:{
+                width: 0,
+                height: 0,
+            }
         };
     }
 
     incrementCount() {
         this.state.count++;
+    }
+    
+    setMonitSize(w,h) {
+        let messageLimitHeight =500
+        if (window.innerWidth > 1920) {
+          messageLimitHeight = h
+        }
+        this.state.monitSize = {
+            width: w,
+            height: h
+        };
+        this.state.messageLimitHeight = messageLimitHeight
     }
 }
 

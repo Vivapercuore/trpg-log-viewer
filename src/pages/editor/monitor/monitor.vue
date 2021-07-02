@@ -1,5 +1,7 @@
 <template>
-  <canvas id="canvas" class="box" ref="canvas" />
+  <canvas id="canvas"
+          class="box"
+          ref="canvas" />
 </template>
 
 <script lang="ts">
@@ -24,13 +26,22 @@ export default defineComponent({
     let canvas: any = this.$refs.canvas
     canvas.width = this.monitorStoreState.resolutionRatio.width
     canvas.height = this.monitorStoreState.resolutionRatio.height
-    drawer.start( canvas , monitorStore.getState() )
+    drawer.start(canvas, monitorStore.getState())
+    this.getCanvasHeight()
+    window.addEventListener('resize', this.getCanvasHeight)
   },
 
-  unmounted(){
+  unmounted() {
     drawer.stop()
+    window.removeEventListener('resize', this.getCanvasHeight)
   },
 
+  methods: {
+    getCanvasHeight() {
+      let canvas: any = this.$refs.canvas
+      monitorStore.setMonitSize(canvas.offsetWidth, canvas.offsetHeight)
+    },
+  },
 })
 </script>
 

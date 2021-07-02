@@ -34,6 +34,12 @@ body {
   margin: 0;
   background-color: #fafafa;
 }
+html::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
+body ::-webkit-scrollbar {
+  display: none; /* Chrome Safari */
+}
 
 * {
   background-position: center;

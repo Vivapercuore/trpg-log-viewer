@@ -56,7 +56,7 @@ const bg:pic = {
 bg.img.src = bgPic;
 
 class dataStore extends Store<MonitData> {
-    protected data(): Click {
+    protected data() {
         return {
             resolutionRatio:{
                 width: 1920,

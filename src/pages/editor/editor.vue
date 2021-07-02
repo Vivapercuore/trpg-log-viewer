@@ -14,19 +14,21 @@
                    plain>点击就+2</el-button>
         <el-button @click="FFmpegTest()"
                    type="primary"
-                   plain>测试FFmpeg</el-button>
+                   plain>FFmpeg帧测试</el-button>
         <el-button @click="getImageData()"
                    type="primary"
                    plain>getImageData</el-button>
         <el-button @click="farmeTest()"
                    type="primary"
-                   plain>性能测试</el-button>
+                   plain>帧性能测试</el-button>
         <el-button @click="downLoad()"
                    type="primary"
                    plain>点击下载</el-button>
       </div>
     </el-col>
+  </el-row>
 
+  <el-row :gutter="10">
     <el-col :md="24"
             :lg="18">
       <div class="monitor">
@@ -38,10 +40,18 @@
             :md="8"
             :lg="6">
       <div class="editor">
-        <timeAxis />
-        时间轴
+        消息列表
+        <messageLine />
       </div>
     </el-col>
+
+    <el-col :md="24">
+      <div class="editor">
+        时间轴
+        <timeAxis />
+      </div>
+    </el-col>
+    
 
     <el-col :sm="24"
             :md="16"
@@ -51,7 +61,7 @@
 
     <el-col :md="24">
       <div>{{ updatetime }}</div>
-      <video :src="videosrc"
+      <video class="video" :src="videosrc"
              controls />
     </el-col>
 
@@ -62,12 +72,13 @@
 import { defineComponent } from 'vue'
 import monitor from '@src/pages/editor/monitor/monitor.vue'
 import timeAxis from '@src/pages/editor/editor/timeAxis.vue'
+import messageLine from '@src/pages/editor/editor/messageLine.vue'
 
 import { clickStore } from '@src/store/click-store'
 
 import { download } from '@src/utils/downLoadBlob'
 
-import { test, testEncodePNGs2WebM } from '@src/core/videoCreater'
+import { test } from '@src/core/videoCreater'
 import { offLineControl } from '@src/core/offLineCanvas'
 
 export default defineComponent({
@@ -75,6 +86,7 @@ export default defineComponent({
   components: {
     monitor,
     timeAxis,
+    messageLine,
   },
   setup() {
     return {
@@ -150,4 +162,10 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+
+.video{
+  width: 100%;
+}
+
+</style>

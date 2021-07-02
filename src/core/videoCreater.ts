@@ -24,7 +24,7 @@ ffmpeg -i 1.mp3 -i 2.mp3 -i 3.mp3 \
 async function test() {
     console.log("run test")
     let frames = await offLineControl.start()
-    frames.push(...await offLineControl.getFrame(3000))
+    frames.push(...await offLineControl.getFrame(300))
 
     const image2video = async () => {
         if (!ffmpedLoadEnd) {

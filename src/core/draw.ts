@@ -27,11 +27,11 @@ class Drawer {
         // console.log("draw")
         this.ctx.save()
         this.setOrigin()
-        this.test()
-        paint.img(this.state.bg)
+        // this.test()
+        this.paintImg(this.state.bg)
         
         this?.state?.picList?.forEach(element => {
-            paint.img(element,{
+            this.paintImg(element,{
                 y:Math.sin(new Date().getTime()/1000) * 50 
             })
         });
@@ -55,20 +55,27 @@ class Drawer {
         this.ctx.fillStyle = 'blue'
         this.ctx.fillRect(0, 0, 100,100) // 
     }
+
+
+    paintImg(data:paintImg,offset){
+            if (!this?.ctx||!data?.img) { return; }
+            //环境没有准备好,直接退出
+            this?.ctx?.drawImage(
+                data.img,data.position.x - data.size.width/2 + (offset?.x||0), //向左半宽 回到中心点
+                - (data.position.y + data.size.height/2) + (offset?.y||0), //向上半高 回到中心点
+                data.size.width,
+                data.size.height
+            );
+        }
+
 }
+
 const drawer = new Drawer();
 
-const paint = {
-    img(data:paintImg,offset){
-        if (!drawer?.ctx||!data?.img) { return; }
-        //环境没有准备好,直接退出
-        drawer?.ctx?.drawImage(
-            data.img,data.position.x - data.size.width/2 + (offset?.x||0), //向左半宽 回到中心点
-            - (data.position.y + data.size.height/2) + (offset?.y||0), //向上半高 回到中心点
-            data.size.width,
-            data.size.height
-        );
-    }
+
+function getImageData(data){
+    if (!drawer?.ctx||!data?.img) { return; }
+    getImageData()
 }
 
 interface paintImg {

@@ -7,11 +7,11 @@ import { defineComponent } from 'vue'
 // import videoCreater from '../videoCreater'
 import { drawer } from '@src/core/draw'
 
-
 import { monitorStore } from '@src/store/monitor-store'
 
 export default defineComponent({
   name: 'monitor',
+
   components: {},
 
   setup() {
@@ -19,22 +19,18 @@ export default defineComponent({
       monitorStoreState: monitorStore.getState(),
     }
   },
+
   mounted() {
-    //临时的canvas处理
     let canvas: any = this.$refs.canvas
     canvas.width = this.monitorStoreState.resolutionRatio.width
     canvas.height = this.monitorStoreState.resolutionRatio.height
     drawer.start( canvas , monitorStore.getState() )
-    // let clientWidth = document.body.clientWidth - 30
-    // let scale = clientWidth / settings.width
-    // canvas.style.transform = `scale(${scale})`
-    // console.log(scale)
-    // ani(canvas)
-    //临时的canvas处理
   },
+
   unmounted(){
     drawer.stop()
   },
+
 })
 </script>
 

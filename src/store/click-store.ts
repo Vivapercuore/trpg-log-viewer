@@ -3,9 +3,8 @@ import {Store} from "@src/store/store";
 interface Click extends Object {
     count: number
 }
-
-class ClickStore extends Store<Click> {
-    protected data(): Click {
+class dataStore extends Store<Click>{
+    protected data() {
         return {
             count: 0
         };
@@ -16,4 +15,4 @@ class ClickStore extends Store<Click> {
     }
 }
 
-export const clickStore: ClickStore = new ClickStore()
+export const clickStore: dataStore = new dataStore()

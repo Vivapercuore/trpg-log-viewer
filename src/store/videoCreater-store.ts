@@ -1,25 +1,30 @@
 import {Store} from "@src/store/store";
 
-
-import bgPic from '@src/assets/bg.png'
-import kpPic from '@src/assets/pl1.png'
-
-
 class dataStore extends Store<MonitData> {
     protected data() {
         return {
             progress:0,
-            logor: [],
+            loger: [],
         };
     }
 
     setProgress(progress) {
         this.state.progress = progress;
+        /*
+         * progress is a float number between 0 to 1.
+         */
     }
 
     addLog({ type, message }){
-        this.loger.push({ type, message })
+        this.state.loger.push({ type, message })
+        /*
+         * type can be one of following:
+         *
+         * info: internal workflow debug messages
+         * fferr: ffmpeg native stderr output
+         * ffout: ffmpeg native stdout output
+         */
     }
 }
 
-export const monitorStore: dataStore = new dataStore()
+export const videoCreaterStore: dataStore = new dataStore()

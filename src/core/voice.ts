@@ -1,4 +1,4 @@
-function getvoice(opt , callback) {
+async function getvoice(opt , callback) {
     opt= Object.assign({
         tex: "您没有输入需要合成的语音",
         //	必填	合成的文本，使用UTF-8编码。小于2048个中文字或者英文数字。（文本在百度服务器内转换为GBK后，长度必须小于4096字节）
@@ -18,30 +18,16 @@ function getvoice(opt , callback) {
         //选填	音量，取值0-15，默认为5中音量
         per: 0 //选填	发音人选择, 0为普通女声，1为普通男生，3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女声
     },opt)
-    console.log({opt})
     //获取token
     //https://openapi.baidu.com/oauth/2.0/token?grant_type=client_credentials&client_id=aS6zAi5wxC6a02mdnrOGN8Yj&client_secret=CiayLt0sSdTy2SYpL494r9yLEEtqp1eh
-    get({
+    
+    return await get({
         url: 'https://tsn.baidu.com/text2audio',
-        data: opt,
-        success: function success(response) {
-            var reader = new FileReader();
-            reader.readAsDataURL(response);
-
-            reader.onload = function (e) {
-                try {
-                    callback(e.target.result);
-                } catch (error) { }
-            };
-        },
-        fail: function fail(status) {
-            console.log("getvoice fail",status)
-            getvoice(text, opt, _success);
-        }
+        data: opt
     });
 }
 
-function get(opt) {   //用于get请求
+async function get(opt) {   //用于get请求
     var params = [];
     for (var key in opt.data) {
         params.push(key + '=' + opt.data[key]);
@@ -51,17 +37,24 @@ function get(opt) {   //用于get请求
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true); //get请求，请求地址，是否异步
 
-    xhr.responseType = opt.responseType || "blob";
+    xhr.responseType =  "blob";
 
-    xhr.onload = function () {
-        if (this.status == 200) {
-            var data = this.response;
-            var blob = new Blob();
-            blob = this.response;
-            opt.success(blob, data);
-        }
-    };
     xhr.send();
+
+
+    return new Promise((resolve, reject) => {
+        xhr.onload = function () {
+            if (this.status == 200) {
+                var data = this.response;
+                var blob = new Blob();
+                blob = this.response;
+                resolve(blob, data);
+            }else{
+                reject(this.response)
+            }
+        };
+    })
+
 }
 
 export default getvoice;

@@ -14,10 +14,10 @@
                    plain>点击就+2</el-button>
         <el-button @click="FFmpegTest()"
                    type="primary"
-                   plain>FFmpeg帧测试</el-button>
-        <el-button @click="getImageData()"
+                   plain>FFmpeg帧生成测试</el-button>
+        <el-button @click="audioTest()"
                    type="primary"
-                   plain>getImageData</el-button>
+                   plain>FFmpeg音频合成测试</el-button>
         <el-button @click="farmeTest()"
                    type="primary"
                    plain>帧性能测试</el-button>
@@ -81,7 +81,7 @@ import { clickStore } from '@src/store/click-store'
 
 import { download } from '@src/utils/downLoadBlob'
 
-import { test } from '@src/core/videoCreater'
+import { videotest,audiotest } from '@src/core/videoCreater'
 import { offLineControl } from '@src/core/offLineCanvas'
 
 export default defineComponent({
@@ -98,6 +98,7 @@ export default defineComponent({
   },
   data() {
     return {
+      videoData:new Blob(),
       updatetime: '',
       videosrc: '',
       classes: [
@@ -135,19 +136,23 @@ export default defineComponent({
     async FFmpegTest() {
       console.time('FFmpegTest')
       try {
-        let res = await test()
+        let res = await videotest()
         this.$data.updatetime = new Date().toString()
         this.$data.videosrc = URL.createObjectURL(res)
-        this.videoData = res
+        this.$data.videoData = res
         console.log(res)
       } catch (error) {
         console.error(error)
       }
       console.timeEnd('FFmpegTest')
     },
-    getImageData() {
-      let frames = offLineControl.start()
-      console.log({ frames })
+    async audioTest() {
+      try {
+        let res = await audiotest()
+        console.log(res)
+      } catch (error) {
+        console.error(error)
+      }
     },
     farmeTest() {
       let frames = offLineControl.start()
@@ -157,8 +162,8 @@ export default defineComponent({
       console.log({ frames })
     },
     downLoad() {
-      if (this.videoData) {
-        download(this.videoData)
+      if (this.$data.videoData) {
+        download(this.$data.videoData)
       }
     },
   },

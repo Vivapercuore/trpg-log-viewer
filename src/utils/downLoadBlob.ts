@@ -1,5 +1,5 @@
 
- const download = function(blob,fileName){
+ const download = function(blob,fileName?){
     const a= document.createElement("a")
     a.href = URL.createObjectURL(blob)
     a.download = fileName||"fileName" // 这里填保存成的文件名

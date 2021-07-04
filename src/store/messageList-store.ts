@@ -9,34 +9,27 @@ class dataStore extends Store<messageDataList> {
     }
 
     setEmpty(time, id?) {
-        console.log("setEmpty",time, id)
         let list = this.state.messages
         if (time <= 0) {
-            console.log("time = 0",list.length)
             let index = list.findIndex(item => item.id === id);
             if (index>=0) {
                 list?.splice(index,1)
-                console.log("delete")
             }
         } else if(time>0) {
-            console.log("time>0",list)
             let index = list.findIndex(item => item.id === id);
             if (list?.[index]?.type === messageTypesName.Empty) {
                 list[index].time = time;
-                console.log("changeEmpty time")
             } else {
                 list.push({
                     type: messageTypesName.Empty,
-                    id:genID(),
+                    id:getID(),
                     time,
                 });
-                console.log("addEmpty",list)
             }
         }else{
             console.log("else")
         }
         this.state.messages = list
-        console.log("setEmpty",this.state.messages.length)
     }
 }
 
@@ -44,7 +37,7 @@ class dataStore extends Store<messageDataList> {
 export const messageListStore: dataStore = new dataStore()
 
 
-function genID(){
+function getID(){
     return Number(Math.random().toString().substr(3,16) + Date.now()).toString(36);
 }
 

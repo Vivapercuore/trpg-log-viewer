@@ -8,8 +8,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-// import videoCreater from '../videoCreater'
-import { test } from '../videoCreater'
 import { ani } from '@src/testFiles/ani'
 
 import testPic from '@src/assets/canvasTest.jpg'

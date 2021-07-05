@@ -1,74 +1,79 @@
 <template>
-  <el-row :gutter="10">
-    <el-col :md="24">
-      <div>
-        <template v-for="classname in classes"
-                  :key="classname.classname">
-          <span :class="classname.classname"> {{ classname.show }}</span>
-        </template>
-        测试按钮区 {{ countState.count }}
-      </div>
-      <div>
-        <el-button @click="testinc()"
-                   type="primary"
-                   plain>点击就+2</el-button>
-        <el-button @click="FFmpegTest()"
-                   type="primary"
-                   plain>FFmpeg帧生成测试</el-button>
-        <el-button @click="audioTest()"
-                   type="primary"
-                   plain>FFmpeg音频合成测试</el-button>
-        <el-button @click="farmeTest()"
-                   type="primary"
-                   plain>帧性能测试</el-button>
-        <el-button @click="downLoad()"
-                   type="primary"
-                   plain>点击下载</el-button>
-      </div>
-    </el-col>
-  </el-row>
+  <el-space wrap>
+    <!-- 按钮测试区 -->
+    <el-row :gutter="10">
+      <el-col :md="24">
+        <div>
+          <template v-for="classname in classes"
+                    :key="classname.classname">
+            <span :class="classname.classname"> {{ classname.show }}</span>
+          </template>
+          测试按钮区 {{ countState.count }}
+        </div>
+        <div>
+          <el-button @click="testinc()"
+                     type="primary"
+                     plain>点击就+2</el-button>
+          <el-button @click="FFmpegTest()"
+                     type="primary"
+                     plain>FFmpeg帧生成测试</el-button>
+          <el-button @click="audioTest()"
+                     type="primary"
+                     plain>FFmpeg音频合成测试</el-button>
+          <el-button @click="farmeTest()"
+                     type="primary"
+                     plain>帧性能测试</el-button>
+          <el-button @click="downLoad()"
+                     type="primary"
+                     plain>点击下载</el-button>
+        </div>
+      </el-col>
+    </el-row>
 
-  <el-row :gutter="10"
-          style="overflow:hidden">
-    <el-col :md="24"
-            :xl="18">
-      <div class="monitor">
-        <monitor />
-      </div>
-    </el-col>
+    <!--消息列表区 -->
+    <el-row :gutter="10"
+            style="overflow:hidden">
+      <el-col :md="24"
+              :xl="18">
+        <div class="monitor">
+          <monitor />
+        </div>
+      </el-col>
 
-    <el-col :md="24"
-            :xl="6">
-      <div class="editor">
-        消息列表
-        <messageLine />
-      </div>
-    </el-col>
+      <el-col :md="24"
+              :xl="6">
+        <div class="editor">
+          消息列表
+          <messageLine />
+        </div>
+      </el-col>
 
-  </el-row>
+    </el-row>
 
-  <el-row :gutter="10">
-    <el-col :md="24">
-      <div class="editor">
-        时间轴
-        <timeAxis />
-      </div>
-    </el-col>
+    <!--时间轴编辑区 -->
+    <el-row :gutter="10">
+      <el-col :md="24">
+        <div class="editor">
+          时间轴编辑
+          <timeAxis />
+        </div>
+      </el-col>
 
-    <el-col :sm="24"
-            :md="16"
-            :lg="24">
-      <div class="timeAxis">编辑器</div>
-    </el-col>
+      <el-col :sm="24"
+              :md="16"
+              :lg="24">
+        <div class="timeAxis">编辑器</div>
+      </el-col>
 
-    <el-col :md="24">
-      <div>{{ updatetime }}</div>
-      <video class="video"
-             :src="videosrc"
-             controls />
-    </el-col>
+      <el-col :md="24">
+        <div>{{ updatetime }}</div>
+        <video class="video"
+               :src="videosrc"
+               controls />
+      </el-col>
+    </el-row>
 
-  </el-row>
+  </el-space>
 </template>
 
 <script lang="ts">
@@ -81,7 +86,7 @@ import { clickStore } from '@src/store/click-store'
 
 import { download } from '@src/utils/downLoadBlob'
 
-import { videotest,audiotest } from '@src/core/videoCreater'
+import { videotest, audiotest } from '@src/core/videoCreater'
 import { offLineControl } from '@src/core/offLineCanvas'
 
 export default defineComponent({
@@ -98,7 +103,7 @@ export default defineComponent({
   },
   data() {
     return {
-      videoData:new Blob(),
+      videoData: new Blob(),
       updatetime: '',
       videosrc: '',
       classes: [
@@ -134,6 +139,7 @@ export default defineComponent({
       clickStore.incrementCount()
     },
     async FFmpegTest() {
+      //FFmpeg帧生成测试
       console.time('FFmpegTest')
       try {
         let res = await videotest()

@@ -6,12 +6,15 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@types/sortablejs": "^1.10.6",
     "element-plus": "^1.0.2-beta.53",
     "ffmpeg.js": "^4.2.9003",
+    "sortablejs": "^1.13.0",
     "vue": "^3.0.5",
     "vue-router": "^4.0.10"
   },
   "devDependencies": {
+    "@types/sortablejs": "^1.10.6",
     "@vitejs/plugin-vue": "^1.2.3",
     "@vue/compiler-sfc": "^3.0.5",
     "less": "^4.1.1",

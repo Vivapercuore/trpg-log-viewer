@@ -33,6 +33,7 @@
     <!--消息列表区 -->
     <el-row :gutter="10"
             style="overflow:hidden">
+
       <el-col :md="24"
               :xl="18">
         <div class="monitor">
@@ -52,6 +53,7 @@
 
     <!--时间轴编辑区 -->
     <el-row :gutter="10">
+
       <el-col :md="24">
         <div class="editor">
           时间轴编辑
@@ -71,6 +73,7 @@
                :src="videosrc"
                controls />
       </el-col>
+      
     </el-row>
 
   </el-space>

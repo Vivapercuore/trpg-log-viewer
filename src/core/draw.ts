@@ -33,7 +33,7 @@ class Drawer {
         if (!this.prevTime) {
             this.prevTime = new Date().getTime();
         }
-        var now = new Date().getTime()；
+        var now = new Date().getTime();
         this.frameTime = now - this.prevTime //本帧时间
         this.experienceTime = now - this.startTime //总时长
         this.prevTime = now //保存本帧时间

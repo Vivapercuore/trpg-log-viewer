@@ -59,7 +59,6 @@ export default defineComponent({
     const tbody = document.querySelector(
       '#messageLine .el-table__body-wrapper .el-table__body tbody'
     )
-    console.log(tbody)
     const sortable = new Sortable(tbody as HTMLElement, {
       group: 'type', // or { name: "...", pull: [true, false, 'clone', array], put: [true, false, array] }
       sort: true, // boolean 定义是否列表单元是否可以在列表容器内进行拖拽排序

@@ -61,6 +61,13 @@
         </div>
       </el-col>
 
+      <el-col :md="24">
+        <div class="logPraser">
+          <logPraser />
+        </div>
+      </el-col>
+
+
       <el-col :sm="24"
               :md="16"
               :lg="24">
@@ -84,6 +91,8 @@ import { defineComponent } from 'vue'
 import monitor from '@src/pages/editor/monitor/monitor.vue'
 import timeAxis from '@src/pages/editor/editor/timeAxis.vue'
 import messageLine from '@src/pages/editor/editor/messageLine.vue'
+import logPraser from '@src/pages/editor/editor/logPraser.vue'
+
 
 import { clickStore } from '@src/store/click-store'
 
@@ -98,6 +107,7 @@ export default defineComponent({
     monitor,
     timeAxis,
     messageLine,
+    logPraser,
   },
   setup() {
     return {

@@ -10,7 +10,11 @@ const testMessage = `11:55:04 <梵蒂> 梵蒂开始新日志记录√
 11:55:53 <戏言> 自由是挺自由。在规定时限内把事情做完就行了。至于在哪工作，怎么工作，没人管我`
 
 const messagePraser = function(messageChars){
-    
+    messages = [];
+    messages.push (...messageChars.splice("\n"))
+    return messages
 }
+
+console.log( messagePraser(testMessage) )
 
 export { messagePraser };

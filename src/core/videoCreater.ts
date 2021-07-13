@@ -13,7 +13,7 @@ console.log( 'Loading ffmpeg-core.js');
 ffmpeg.load().then( ()=>{
     ffmpedLoadEnd = true
     videoCreaterStore.addLog({type:"info",message:"转换器加载完成"})
-    console.log( 'Loaded');
+    // console.log( 'Loaded');
 })
 // https://github.com/ffmpegwasm/ffmpeg.wasm
 
@@ -67,9 +67,9 @@ async function image2video(frames:[Uint8Array]) : Blob {
     }
 
     //合成视频
-    console.log( 'Start transcoding');
+    // console.log( 'Start transcoding');
     await ffmpeg.run('-framerate', '30', '-pattern_type', 'glob', '-i', '*.png', '-i', 'testmusic.mp3', '-c:a', 'copy', '-shortest', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', 'out.mp4');
-    console.log( 'transcoding success');
+    // console.log( 'transcoding success');
 
     //输出文件
     const data = ffmpeg.FS('readFile', 'out.mp4');
@@ -89,7 +89,7 @@ async function image2video(frames:[Uint8Array]) : Blob {
 
 
 async function videotest() : Blob {
-    console.log("run test")
+    // console.log("run test")
     let frames = await offLineControl.start()
     frames.push(...await offLineControl.getFrame(300))
     return await image2video(frames)
@@ -101,7 +101,7 @@ async function audiotest() : Blob  {
 
     const audioContent = await getvoice({ tex: "這是平常某一日的夜晚。" });
 
-    console.log({audioContent})
+    // console.log({audioContent})
     var reader = new FileReader();
     reader.readAsDataURL(audioContent)
     reader.onload = function (e) {

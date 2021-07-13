@@ -10,26 +10,37 @@ class dataStore extends Store<messageDataList> {
 
     setEmpty(time, id?) {
         let list = this.state.messages
-        if (time <= 0) {
-            let index = list.findIndex(item => item.id === id);
-            if (index>=0) {
-                list?.splice(index,1)
-            }
-        } else if(time>0) {
-            let index = list.findIndex(item => item.id === id);
-            if (list?.[index]?.type === messageTypesName.Empty) {
-                list[index].time = time;
+        if (!id) { //新增
+            list.push({
+                type: messageTypesName.Empty,
+                id:getID(),
+                time,
+            });
+        }else{ //删改
+            if (time <= 0) { //删除
+                let index = list.findIndex(item => item.id === id);
+                if (index>=0) {
+                    list?.splice(index,1)
+                }
             } else {
-                list.push({
-                    type: messageTypesName.Empty,
-                    id:getID(),
-                    time,
-                });
+                let index = list.findIndex(item => item.id === id);
+                if (list?.[index]?.type === messageTypesName.Empty) { //修改
+                    list[index].time = time;
+                } else { //无id,新增处理
+                    list.push({
+                        type: messageTypesName.Empty,
+                        id:getID(),
+                        time,
+                    });
+                }
             }
-        }else{
-            console.log("else")
         }
+        //刷新数据,触发state更新
         this.state.messages = list
+    }
+
+    setMessage(message) {
+        let list = this.state.messages
     }
 }
 

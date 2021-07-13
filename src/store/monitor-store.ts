@@ -27,10 +27,6 @@ interface pic extends Object  {
     size: size
 }
 
-// enum side {
-//     leftSide = "left"
-//     rightSide = "right"
-// }
 const kp:pic = {
     img:new Image(),
     position: {
